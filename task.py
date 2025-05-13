@@ -1,5 +1,8 @@
 a = int(input())
 b = int(input())
-c = int(input())
-d = int(input())
-print((a + b + c + d) * 3)
+c = a + b
+print(a, '+', b, '=', c)
+c = a - b
+print(a, '-', b, '=', c)
+c = a * b
+print(a, '*', b, '=', c)
