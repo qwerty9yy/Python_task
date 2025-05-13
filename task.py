@@ -1,8 +1,4 @@
 a = int(input())
 b = int(input())
-c = a + b
-print(a, '+', b, '=', c)
-c = a - b
-print(a, '-', b, '=', c)
-c = a * b
-print(a, '*', b, '=', c)
+n = int(input())
+print(a + b * (n - 1))
