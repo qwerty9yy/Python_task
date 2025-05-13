@@ -1,4 +1,2 @@
 a = int(input())
-b = int(input())
-n = int(input())
-print(a + b * (n - 1))
+print(a, 2 * a, 3 * a, 4 * a, 5 * a, sep='---')
