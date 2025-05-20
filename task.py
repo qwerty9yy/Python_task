@@ -1,9 +1,4 @@
-num = int(input())
-a = num // 1000
-b = (num // 100) % 10
-c = (num % 100) // 10
-d = num % 10
-print('Цифра в позиции тысяч равна', a)
-print('Цифра в позиции сотен равна', b)
-print('Цифра в позиции десятков равна', c)
-print('Цифра в позиции единиц равна', d)
+from math import *
+
+n, a = int(input()), float(input())
+print((n * a ** 2) / (4 * tan(pi/n)))
