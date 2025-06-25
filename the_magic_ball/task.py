@@ -18,7 +18,8 @@ def magic_ball():
     otvet = 'да'
     while True:
         if otvet == 'да':
-            print(input('Задай свой вопрос? '))
+            print('Задай свой вопрос? ')
+            input()
             print(f'Ответ на ваш вопрос: {choice_answer()}')
             print('\nХотите задать еще один вопрос? (да/нет)')
         elif otvet == 'нет':
