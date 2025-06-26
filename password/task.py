@@ -1,130 +1,72 @@
 import random
-from traceback import print_tb
 
 digits = '0123456789'
 lowercase_letters = 'abcdefghijklmnopqrstuvwxyz'
 uppercase_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 punctuation = '!#$%&*+-=?@^_'
+ambiguous_chars = {'i', 'l', '1', 'L', 'o', '0', 'O'}
 
-def quantity_pass():
+
+def input_number(prompt, min_value=1):
     while True:
-        n = input().lower()
+        n = input(prompt).strip()
         if n.isdigit():
-            break
+            num = int(n)
+            if num >= min_value:
+                return num
+            print(f'Число должно быть не меньше {min_value}')
         else:
-            print("Не могу разбрать! Введите число")
-    return int(n)
+            print("Пожалуйста, введите число")
 
-def length_pass():
+
+def input_yes_no(prompt):
     while True:
-        n = input().lower()
-        if n.isdigit():
-            break
-        else:
-            print("Не могу разбрать! Введите число")
-    return int(n)
+        n = input(prompt).lower().strip()
+        if n in ('да', 'нет'):
+            return n == 'да'
+        print('Пожалуйста, ответьте "да" или "нет"')
 
-def Num_letter():
-    while True:
-        n = input().lower()
-        if 'да' in n or 'нет' in n:
-            break
-        else:
-            print('Простите не могу разобрать! Напишите "да" или "нет"')
-    return n
 
-def Caps_letter():
-    while True:
-        n = input().lower()
-        if 'да' in n or 'нет' in n:
-            break
-        else:
-            print('Простите не могу разобрать! Напишите "да" или "нет"')
-    return n
-
-def Lowercase_letters():
-    while True:
-        n = input().lower()
-        if 'да' in n or 'нет' in n:
-            break
-        else:
-            print('Простите не могу разобрать! Напишите "да" или "нет"')
-    return n
-
-def Symbols_letters():
-    while True:
-        n = input().lower()
-        if 'да' in n or 'нет' in n:
-            break
-        else:
-            print('Простите не могу разобрать! Напишите "да" или "нет"')
-    return n
-
-def Obscure_letters():
-    while True:
-        n = input().lower()
-        if 'да' in n or 'нет' in n:
-            break
-        else:
-            print('Простите не могу разобрать! Напишите "да" или "нет"')
-    return n
-
-def Generation():
+def generate_passwords():
     chars = []
 
-    print('Сколько вам нужно паролей для генерации? (Введите число)')
+    print('=== Генератор паролей ===')
 
-    while True:
-        quantity = quantity_pass()
-        if quantity > 0:
-            break
-        else:
-            print('Может все таки введем число больше 0')
+    quantity = input_number('Сколько вам нужно паролей? (Введите число): ')
+    length = input_number('Какую длину пароля сгенерировать? (Введите число): ')
 
-    print('Какую длинну пароля сгенерировать?')
-    while True:
-        length = length_pass()
-        if length > 0:
-            break
-        else:
-            print('Может все таки введем число больше 0')
+    print('\nКакие символы включать в пароль?')
+    include_digits = input_yes_no('Включать цифры? (да/нет): ')
+    include_upper = input_yes_no('Включать прописные буквы? (да/нет): ')
+    include_lower = input_yes_no('Включать строчные буквы? (да/нет): ')
+    include_symbols = input_yes_no('Включать символы? (да/нет): ')
+    exclude_ambiguous = input_yes_no('Исключать неоднозначные символы (il1Lo0O)? (да/нет): ')
 
-    print('Включать ли цифры? (да / нет)')
-    num = Num_letter()
-    if 'да' in num:
+    if include_digits:
         chars.extend(digits)
-
-    print('Включать ли прописные буквы? (да / нет)')
-    caps = Caps_letter()
-    if 'да' in caps:
+    if include_upper:
         chars.extend(uppercase_letters)
-
-    print('Включать ли строчные буквы? (да / нет)')
-    lowercase = Lowercase_letters()
-    if 'да' in lowercase:
+    if include_lower:
         chars.extend(lowercase_letters)
-
-    print('Включать ли символы? (да / нет)')
-    symbols = Symbols_letters()
-    if 'да' in symbols:
+    if include_symbols:
         chars.extend(punctuation)
 
-    print('Исключать ли неоднозначные символы (il1Lo0O)? (да / нет)')
-    obscure = Obscure_letters()
-    if 'да' in obscure:
-        if 'да' in lowercase:
-            chars.remove('i')
-            chars.remove('l')
-            chars.remove('o')
-        if 'да' in num:
-            chars.remove('1')
-            chars.remove('0')
-        if 'да' in caps:
-            chars.remove('L')
-            chars.remove('O')
+    if not chars:
+        print('Ошибка: не выбрано ни одного набора символов')
+        return
 
-    for i in range(quantity):
-        p = random.sample(chars, length)
-        print(''.join(p))
+    if exclude_ambiguous:
+        chars = [c for c in chars if c not in ambiguous_chars]
 
-Generation()
+    if length > len(chars):
+        print(f'Ошибка: максимальная длина для выбранных символов - {len(chars)}')
+        return
+
+    print('\nСгенерированные пароли:')
+    for _ in range(quantity):
+        password = ''.join(random.sample(chars, length))
+        print(password)
+
+
+if __name__ == '__main__':
+    generate_passwords()
